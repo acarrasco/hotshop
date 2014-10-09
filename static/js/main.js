@@ -19,6 +19,12 @@ define('main', ['swiper', 'facebook'], function (swiper, facebook) {
         version: 'v2.1'
     });
 
+    $('#login button').bind('click', function() {
+        facebook.login(function() {
+            $('#login').addClass('hidden');
+            $('#photoSwiper').removeClass('hidden');
+        });
+    });
 
     facebook.getLoginStatus(function (response) {
         if (response.status === 'connected') {

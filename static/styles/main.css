@@ -71,4 +71,5 @@ and open the template in the editor.
 .edgeTarget .glyphicon {
     font-size: xx-large;
     opacity: 0.5;
+    padding: 0.25ex;
 }

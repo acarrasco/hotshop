@@ -10,7 +10,7 @@ define('swiper',
                     var startX, startY, startTime;
                     var width = $container.width();
                     $container.empty().append($newElement);
-                    $newElement.css({position: 'absolute', top: 0, left: 0, width: $container.width() + 'px'});
+                    $newElement.css({position: 'absolute', top: 0, left: 0, width: '100%', 'max-height':'100%'});
 
 
                     function handleStart(event) {
