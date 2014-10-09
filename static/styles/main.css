@@ -48,12 +48,12 @@ and open the template in the editor.
   width: 99%;
 }
 
-.hfixed {
+.unchosen {
     opacity: 0.5;
     font-size: 2.6em;
 }
 
-.hcenter {
+.chosen {
     text-align: center;
     width: 100%;
     opacity: 1.0;

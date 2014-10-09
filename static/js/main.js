@@ -81,31 +81,28 @@ define('main', ['swiper', 'facebook'], function (swiper, facebook) {
         var side = pickSide(dx, dy);
 
         for (var i = 0; i < 4; i++) {
-            var activate = false;
-            var opacity;
-            var glow;
-            var size;
+            var chosen = false;
             if (i === side) {
                 if (distance > width * 0.25) {
-                    activate = true;
+                    chosen = true;
                 } else {
-                    activate = false;
+                    chosen = false;
                 }
                 
                 var x = 2 * distance / width;
                 glow = '0 0 ' + x + 'em blue, 0 0 ' + x + 'em blue, 0 0 ' + x + 'em blue';
 
             } else {
-                activate = false;
+                chosen = false;
             }
 
-            if (activate) {
-                glyphs[i].removeClass('hfixed');
-                glyphs[i].addClass('hcenter');
+            if (chosen) {
+                glyphs[i].removeClass('unchosen');
+                glyphs[i].addClass('chosen');
             }
             else {
-                glyphs[i].removeClass('hcenter');
-                glyphs[i].addClass('hfixed');
+                glyphs[i].removeClass('chosen');
+                glyphs[i].addClass('unchosen');
             }
         }
     };
