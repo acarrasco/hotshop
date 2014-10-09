@@ -7,24 +7,23 @@ function userExists(userId, callback) {
 }
 
 function savePendingProducts(userId, productIds, callback) {
-    console.log('productIds', productIds);
     client.sadd('pending_' + userId, productIds, callback);
 }
 
 function nextProduct(userId, callback) {
-    client.spop('pending_' + userId, callback);
+    client.srandmember('pending_' + userId, callback);
 }
 
 function wantProduct(userId, productId, callback) {
-    client.sadd('want_' + userId, productId, callback);
+    client.smove('pending_' + userId, 'want_' + userId, productId, callback);
 }
 
 function ownProduct(userId, productId, callback) {
-    client.sadd('own_' + userId, productId, callback);
+    client.smove('pending_' + userId, 'own_' + userId, productId, callback);
 }
 
-function ignoreProduct(user, productId) {
-    client.sadd('ignored_' + userId, productId);
+function ignoreProduct(userId, productId, callback) {
+    client.smove('pending_' + userId, 'ignored_' + userId, productId, callback);
 }
 
 module.exports = {

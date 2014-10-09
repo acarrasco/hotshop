@@ -13,7 +13,7 @@ app.post('/user/:userId/init', function (req, res) {
     var userId = req.params.userId;
     db.userExists(userId, function (err, userExists) {
         if (err) {
-            return res.json({error: ''+err, reason: 'db error checking if user exists'});
+            return res.json({error: '' + err, reason: 'db error checking if user exists'});
         }
 
         if (userExists) {
@@ -23,7 +23,7 @@ app.post('/user/:userId/init', function (req, res) {
         products.getAllProducts(function (err, products) {
             if (err) {
                 console.log(err);
-                return res.json({error: ''+err, reason: 'devapi error retrieving products'});
+                return res.json({error: '' + err, reason: 'devapi error retrieving products'});
             }
 
             console.log('products:', products);
@@ -31,7 +31,7 @@ app.post('/user/:userId/init', function (req, res) {
             var productIds = lodash.pluck(products, 'Id');
             db.savePendingProducts(userId, productIds, function (err) {
                 if (err) {
-                    return res.json({error: ''+err, reason: 'db error saving pending products'});
+                    return res.json({error: '' + err, reason: 'db error saving pending products'});
                 }
                 return res.json({error: false, newUser: true});
             });
@@ -41,12 +41,12 @@ app.post('/user/:userId/init', function (req, res) {
 
 app.post('/user/:userId/nextproduct', function (req, res) {
     var userId = req.params.userId;
-    db.nextProduct(userId, function(err, productId) {
+    db.nextProduct(userId, function (err, productId) {
         if (err) {
             return res.json({error: '' + err, reason: 'db error getting next product'});
         }
 
-        products.getProductInfo(productId, function(err, productInfo) {
+        products.getProductInfo(productId, function (err, productInfo) {
             if (err) {
                 return res.json({error: '' + err, reason: 'devapi error retrieving product info'});
             }
@@ -55,27 +55,19 @@ app.post('/user/:userId/nextproduct', function (req, res) {
     });
 });
 
-app.post('/user/:userId/search/', function (req, res, next) {
+app.post('/user/:userId/have/:productId', function (req, res) {
 
 });
 
-app.post('/user/:userId/have/:productId', function (req, res, next) {
+app.post('/user/:userId/want/:productId', function (req, res) {
 
 });
 
-app.post('/user/:userId/want/:productId', function (req, res, next) {
+app.post('/user/:userId/meh/:productId', function (req, res) {
 
 });
 
-app.post('/user/:userId/meh/:productId', function (req, res, next) {
-
-});
-
-app.get('/user/:userId/wishlist', function (req, res, next) {
-    
-});
-
-app.post('/user/:userId/dontlike/:productId', function (req, res, next) {
+app.get('/user/:userId/wishlist', function (req, res) {
 
 });
 
@@ -86,6 +78,17 @@ app.get('/user/:userId/inbox', function (req, res, next) {
 
 });
 
-http.createServer(app).listen(8080, function() {
+app.get('/product/:productId', function (req, res) {
+    var productId = req.params.productId;
+
+    products.getProductInfo(productId, function (err, productInfo) {
+        if (err) {
+            return res.json({error: '' + err, reason: 'devapi error retrieving product info'});
+        }
+        return res.json({error: false, productInfo: productInfo});
+    });
+});
+
+http.createServer(app).listen(8080, function () {
     console.log('server created');
 });

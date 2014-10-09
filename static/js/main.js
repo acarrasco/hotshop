@@ -19,12 +19,15 @@ define('main', ['swiper', 'facebook'], function (swiper, facebook) {
         version: 'v2.1'
     });
 
+    var current;
+    var userId;
+
     $('#login button').bind('click', function () {
         facebook.login(function () {
             $.post('/user/' + userId + '/init', function () {
                 $('#login').addClass('hidden');
                 $('#photoSwiper').removeClass('hidden');
-                loadNew();
+                load();
                 console.log(arguments);
             });
         });
@@ -34,15 +37,16 @@ define('main', ['swiper', 'facebook'], function (swiper, facebook) {
         if (response.status === 'connected') {
             $('#photoSwiper').removeClass('hidden');
             userId = response.authResponse.userID;
-            loadNew();
+            load();
         } else {
             $('#login').removeClass('hidden');
         }
     });
 
     var feed = function (callback) {
-        $.post('/user/' + userId + '/nextProduct', function(data) {
-            callback(data.productInfo);
+        $.post('/user/' + userId + '/nextProduct', function (data) {
+            current = data.productInfo;
+            callback(current);
         });
     };
 
@@ -99,21 +103,44 @@ define('main', ['swiper', 'facebook'], function (swiper, facebook) {
 
         switch (side) {
             case 0:
-                window.open(productInfo.ProductPageUrl);
+                if (productInfo.ProductPageUrl) {
+                    window.location = productInfo.ProductPageUrl;
+                }
                 return;
             case 1:
+                $.post('/user/' + userId + '/want/' + productInfo.Id, function (data) {
+                    load();
+                });
                 return;
             case 2:
+                $.post('/user/' + userId + '/have/' + productInfo.Id, function (data) {
+                    load();
+                });
                 return;
             case 3:
+                $.post('/user/' + userId + '/meh/' + productInfo.Id, function (data) {
+                    load();
+                });
                 return;
         }
     };
 
-    function loadNew() {
-        feed(function(current) {
-            swiper($('#photoSwiperContainer'), current, makeElement, exitCallback, updateCallback);
-        });
+    function load() {
+        var hash = $.deparam.fragment();
+        var productId = hash.productId;
+
+        if (current || !productId) {
+            feed(function(current) {
+                hash.productId = current.Id;
+                window.location.hash = $.param(hash);
+                swiper($('#photoSwiperContainer'), current, makeElement, exitCallback, updateCallback);
+            });
+        } else {
+            $.get('/product/' + productId, function(data) {
+                current = data.productInfo;
+                swiper($('#photoSwiperContainer'), current, makeElement, exitCallback, updateCallback);
+            });
+        }
     }
 
 });
