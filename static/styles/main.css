@@ -53,7 +53,7 @@ and open the template in the editor.
     font-size: 2.6em;
 
     transition-property: font-size, width, opacity;
-    transition-duration: 0.5s;
+    transition-duration: 0.25s;
 }
 
 .chosen {
@@ -63,7 +63,7 @@ and open the template in the editor.
     font-size: 8.0em;
     
     transition-property: font-size, width, opacity;
-    transition-duration: 0.5s;
+    transition-duration: 0.25s;
 }
 
 #product {
