@@ -103,20 +103,32 @@ app.get('/user/:userId/ownlist', function (req, res) {
 
 
 app.get('/user/:userId/reviews', function (req, res) {
-    ugc.getFreshGoodReviewsFor(req.params.userId, function (err, reviews) {
+    var since = Date.now() - 60 * 60 * 24 * 30;
+    db.getWishList(req.params.userId, function (err, productIds) {
         if (err) {
-            return res.json({error: '' + err, reason: 'db error getting reviews list'});
+            return res.json({error: '' + err, reason: 'db error getting wish list'});
         }
-        res.json({error: false, reviews: reviews});
+        ugc.getFreshGoodReviewsFor(productIds, since, function (err, reviews) {
+            if (err) {
+                return res.json({error: '' + err, reason: 'devapi error getting reviews list'});
+            }
+            res.json({error: false, reviews: reviews});
+        });
     });
 });
 
 app.get('/user/:userId/questions', function (req, res) {
-    ugc.getFreshUnansweredQuestionsFor(req.params.userId, function (err, questions) {
+    var since = Date.now() - 60 * 60 * 24 * 30;
+    db.getOwnList(req.params.userId, function (err, productIds) {
         if (err) {
-            return res.json({error: '' + err, reason: 'db error getting reviews list'});
+            return res.json({error: '' + err, reason: 'db error getting own list'});
         }
-        res.json({error: false, questions: questions});
+        ugc.getFreshUnansweredQuestionsFor(productIds, since, function (err, questions) {
+            if (err) {
+                return res.json({error: '' + err, reason: 'devapi error getting reviews list'});
+            }
+            res.json({error: false, questions: questions});
+        });
     });
 });
 
