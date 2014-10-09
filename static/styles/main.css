@@ -22,11 +22,13 @@ and open the template in the editor.
     max-width: 500px;
     margin: 0 auto;
 }
-#photoSwiper:before, #product {
+
+#photoSwiper:before, .valignContainer {
     /* these are the important styles for the centered element: */
     display: inline-block;
     vertical-align: middle;
 }
+
 #photoSwiper:before {
     /* this is the important part for vertical alignment */
     content: '';
@@ -37,15 +39,22 @@ and open the template in the editor.
     /* this just takes care of whitespace added by having display:inline-block (there are other methods) */
     margin-left: -0.25em;
 }
+
+.valignContainer {
+  /* extra styling */
+  background: #ddd;
+  border-radius: 5px;
+  padding: 0 5% 0.5em 5%;
+  width: 99%;
+}
+
 #product {
     /* extra styling */
     font-family: 'Helvetica Neue', Helvetica, sans-serif;
-    padding: 0 5% 0.5em 5%;
-    width: 90%;
 }
 
 #haveIt {
-    bottom: 50%;
+    bottom: 0;
     z-index: 100;
     margin-left: auto;
     margin-right: auto;
@@ -56,10 +65,12 @@ and open the template in the editor.
 
 #wantIt {
     z-index: 100;
-    position: absolute;
-    right: 0;
-    top: 20%;
     color: red;
+    position: absolute;
+    width: 3.9em;
+    height: 100%;
+    right: 0;
+    top: 45%;
 }
 #wantIt p {
     transform: rotate(90deg);
@@ -68,15 +79,20 @@ and open the template in the editor.
 
 #meh {
     z-index: 100;
-    left: 0;
+    color: red;
     position: absolute;
-    top: 20%;
+    width: 3.9em;
+    height: 100%;
+    left: 0;
+    top: 45%;
 }
 #meh p {
     transform: rotate(90deg);
 }
 
 #moreInfo {
+    width: 100%;
+    position: absolute;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
