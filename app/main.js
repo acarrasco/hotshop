@@ -1,49 +1,91 @@
 var express = require('express');
+var http = require('http');
+var lodash = require('lodash');
+var products = require('./products'); 
+var db = require('./db');
 
 var app = express();
 
-app.configure(function () {
-    app.use(express.methodOverride()); // Allow browsers to simulate PUT etc.
-    app.use(textHandler); // Handle text POSTs
-    app.use(express.bodyParser()); // Support POST form bodies. Why would someone ever *not* want this?
-    app.use(express.cookieParser('c98wrytiasghaos')); // Support yummy signed cookies
-    // 'express.static' causes jshint warning (static is reserved word).
-    app.use('/public', express['static']('static'));
-    app.use(express.errorHandler({
-        dumpExceptions: true,
-        showStack: true
-    }));
-    app.use(app.router);
+// 'express.static' causes jshint warning (static is reserved word).
+app.use('/public', express['static']('static'));
+
+app.post('/user/:userId/init', function (req, res) {
+    var userId = req.params.userId;
+    db.userExists(userId, function (err, userExists) {
+        if (err) {
+            return res.json({error: ''+err, reason: 'db error checking if user exists'});
+        }
+
+        if (userExists) {
+            return res.json({error: false, newUser: false});
+        }
+
+        products.getAllProducts(function (err, products) {
+            if (err) {
+                console.log(err);
+                return res.json({error: ''+err, reason: 'devapi error retrieving products'});
+            }
+
+            console.log('products:', products);
+
+            var productIds = lodash.pluck(products, 'Id');
+            db.savePendingProducts(userId, productIds, function (err) {
+                if (err) {
+                    return res.json({error: ''+err, reason: 'db error saving pending products'});
+                }
+                return res.json({error: false, newUser: true});
+            });
+        });
+    });
 });
 
-app.post('/user/:userId/nextproduct', function(req, res, next) {
+app.post('/user/:userId/nextproduct', function (req, res) {
+    var userId = req.params.userId;
+    db.nextProduct(userId, function(err, productId) {
+        if (err) {
+            return res.json({error: '' + err, reason: 'db error getting next product'});
+        }
+
+        products.getProductInfo(productId, function(err, productInfo) {
+            if (err) {
+                return res.json({error: '' + err, reason: 'devapi error retrieving product info'});
+            }
+            return res.json({error: false, productInfo: productInfo});
+        });
+    });
+});
+
+app.post('/user/:userId/search/', function (req, res, next) {
 
 });
 
-app.post('/user/:userId/search/', function(req, res, next) {
+app.post('/user/:userId/have/:productId', function (req, res, next) {
 
 });
 
-app.post('/user/:userId/like/:productId', function(req, res, next) {
+app.post('/user/:userId/want/:productId', function (req, res, next) {
 
 });
 
-app.post('/user/:userId/want/:productId', function(req, res, next) {
+app.post('/user/:userId/meh/:productId', function (req, res, next) {
 
 });
 
-app.get('/user/:userId/wishlist', function(req, res, next) {
+app.get('/user/:userId/wishlist', function (req, res, next) {
+    
+});
+
+app.post('/user/:userId/dontlike/:productId', function (req, res, next) {
 
 });
 
-app.post('/user/:userId/dontlike/:productId', function(req, res, next) {
-
-});
-
-app.get('/user/:userId/inbox', function(req, res, next) {
+app.get('/user/:userId/inbox', function (req, res, next) {
     //people asking about products you own
 
     //call to action for reviews
 
 });
 
+http.createServer(app).listen(8080, function() {
+    console.log('server created');
+});

@@ -19,32 +19,35 @@ define('main', ['swiper', 'facebook'], function (swiper, facebook) {
         version: 'v2.1'
     });
 
-    $('#login button').bind('click', function() {
-        facebook.login(function() {
-            $('#login').addClass('hidden');
-            $('#photoSwiper').removeClass('hidden');
+    $('#login button').bind('click', function () {
+        facebook.login(function () {
+            $.post('/user/' + userId + '/init', function () {
+                $('#login').addClass('hidden');
+                $('#photoSwiper').removeClass('hidden');
+                loadNew();
+                console.log(arguments);
+            });
         });
     });
 
     facebook.getLoginStatus(function (response) {
         if (response.status === 'connected') {
             $('#photoSwiper').removeClass('hidden');
+            userId = response.authResponse.userID;
+            loadNew();
         } else {
             $('#login').removeClass('hidden');
         }
     });
 
-    var i = 0;
-    var products = [
-        'borat2.jpg',
-        'borat1.jpg'
-    ];
-    var feed = function () {
-        return products[i++ % products.length];
+    var feed = function (callback) {
+        $.post('/user/' + userId + '/nextProduct', function(data) {
+            callback(data.productInfo);
+        });
     };
 
-    var makeElement = function (x) {
-        return $('<img>').attr({src: x});
+    var makeElement = function (productInfo) {
+        return $('<img>').attr({src: productInfo.ImageUrl});
     };
 
     var pickSide = function (dx, dy) {
@@ -74,18 +77,43 @@ define('main', ['swiper', 'facebook'], function (swiper, facebook) {
         var side = pickSide(dx, dy);
 
         for (var i = 0; i < 4; i++) {
-            var opacity = (i === side) && distance > (width * 0.5) && 1 || 0.5;
-            glyphs[i].css('opacity', opacity);
+            var opacity;
+            var glow;
+            if (i === side) {
+                opacity = distance > (width * 0.5) && 1 || 0.5;
+                var x = 2 * distance / width;
+                glow = '0 0 ' + x + 'em blue, 0 0 ' + x + 'em blue, 0 0 ' + x + 'em blue';
+            } else {
+                opacity = 0.5;
+                glow = '';
+            }
+            glyphs[i].css({'opacity': opacity, 'text-shadow': glow});
         }
     };
 
-    var exitCallback = function (element, dx, dy, dt) {
+    var exitCallback = function (productInfo, dx, dy, dt) {
         var side = pickSide(dx, dy);
         for (var i = 0; i < 4; i++) {
-            glyphs[i].css('opacity', 0.5);
+            glyphs[i].css({'opacity': 0.5, 'text-shadow': ''});
+        }
+
+        switch (side) {
+            case 0:
+                window.open(productInfo.ProductPageUrl);
+                return;
+            case 1:
+                return;
+            case 2:
+                return;
+            case 3:
+                return;
         }
     };
 
-    swiper($('#photoSwiperContainer'), feed, makeElement, exitCallback, updateCallback);
+    function loadNew() {
+        feed(function(current) {
+            swiper($('#photoSwiperContainer'), current, makeElement, exitCallback, updateCallback);
+        });
+    }
 
 });
