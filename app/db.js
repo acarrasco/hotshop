@@ -26,10 +26,30 @@ function ignoreProduct(userId, productId, callback) {
     client.smove('pending_' + userId, 'ignored_' + userId, productId, callback);
 }
 
+function getWishList(userId, callback) {
+    client.smembers('want_' + userId, callback);
+}
+
+function getOwnList(userId, callback) {
+    client.smembers('own_' + userId, callback);
+}
+
+function getNotificationsDate(userId, callback) {
+    client.get('notifications_date_' + userId, callback);
+}
+
+function updateNotificationsDate(userId, timestamp, callback) {
+    client.getset('notifications_date_' + userId, timestamp, callback);
+}
+
 module.exports = {
     userExists: userExists,
     savePendingProducts: savePendingProducts,
     nextProduct: nextProduct,
     wantProduct: wantProduct,
-    ignoreProduct: ignoreProduct
+    ignoreProduct: ignoreProduct,
+    getWishList: getWishList,
+    getOwnList: getOwnList,
+    getNotificationsDate: getNotificationsDate,
+    updateNotificationsDate: updateNotificationsDate
 };
