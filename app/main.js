@@ -1,7 +1,8 @@
 var express = require('express');
 var http = require('http');
 var lodash = require('lodash');
-var products = require('./products'); 
+var products = require('./products');
+var ugc = require('./ugc');
 var db = require('./db');
 
 var app = express();
@@ -56,26 +57,67 @@ app.post('/user/:userId/nextproduct', function (req, res) {
 });
 
 app.post('/user/:userId/have/:productId', function (req, res) {
-
+    db.haveProduct(req.params.userId, req.params.productId, function (err) {
+        if (err) {
+            return res.json({error: '' + err, reason: 'db error saving ownership list'});
+        }
+        res.json({error: false});
+    });
 });
 
 app.post('/user/:userId/want/:productId', function (req, res) {
-
+    db.wantProduct(req.params.userId, req.params.productId, function (err) {
+        if (err) {
+            return res.json({error: '' + err, reason: 'db error saving wish list'});
+        }
+        res.json({error: false});
+    });
 });
 
 app.post('/user/:userId/meh/:productId', function (req, res) {
-
+    db.ignoreProduct(req.params.userId, req.params.productId, function (err) {
+        if (err) {
+            return res.json({error: '' + err, reason: 'db error saving ignore list'});
+        }
+        res.json({error: false});
+    });
 });
 
 app.get('/user/:userId/wishlist', function (req, res) {
-
+    db.getWishList(req.params.userId, function (err, wishList) {
+        if (err) {
+            return res.json({error: '' + err, reason: 'db error getting wish list'});
+        }
+        res.json({error: false, wishList: wishList});
+    });
 });
 
-app.get('/user/:userId/inbox', function (req, res, next) {
-    //people asking about products you own
+app.get('/user/:userId/ownlist', function (req, res) {
+    db.getOwnList(req.params.userId, function (err, ownList) {
+        if (err) {
+            return res.json({error: '' + err, reason: 'db error getting own list'});
+        }
+        res.json({error: false, ownList: ownList});
+    });
+});
 
-    //call to action for reviews
 
+app.get('/user/:userId/reviews', function (req, res) {
+    ugc.getFreshGoodReviewsFor(req.params.userId, function (err, reviews) {
+        if (err) {
+            return res.json({error: '' + err, reason: 'db error getting reviews list'});
+        }
+        res.json({error: false, reviews: reviews});
+    });
+});
+
+app.get('/user/:userId/questions', function (req, res) {
+    ugc.getFreshUnansweredQuestionsFor(req.params.userId, function (err, questions) {
+        if (err) {
+            return res.json({error: '' + err, reason: 'db error getting reviews list'});
+        }
+        res.json({error: false, questions: questions});
+    });
 });
 
 app.get('/product/:productId', function (req, res) {
