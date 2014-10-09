@@ -71,36 +71,42 @@ define('main', ['swiper', 'facebook'], function (swiper, facebook) {
     };
 
     var glyphs = [
-        $('#moreInfo span'),
-        $('#wantIt span'),
-        $('#haveIt span'),
-        $('#meh span')
+        $('#moreInfo'),
+        $('#wantIt'),
+        $('#haveIt'),
+        $('#meh')
     ];
 
     var updateCallback = function (dx, dy, distance, width) {
         var side = pickSide(dx, dy);
 
         for (var i = 0; i < 4; i++) {
+            var activate = false;
             var opacity;
             var glow;
             var size;
             if (i === side) {
                 if (distance > width * 0.25) {
-                    opacity = 1;
-                    size = 'xx-large';
+                    activate = true;
                 } else {
-                    opacity = 0.5;
-                    size = 'x-large';
+                    activate = false;
                 }
                 
                 var x = 2 * distance / width;
                 glow = '0 0 ' + x + 'em blue, 0 0 ' + x + 'em blue, 0 0 ' + x + 'em blue';
 
             } else {
-                opacity = 0.5;
-                glow = '';
+                activate = false;
             }
-            glyphs[i].css({'opacity': opacity, 'text-shadow': glow, 'font-size': size  });
+
+            if (activate) {
+                glyphs[i].removeClass('hfixed');
+                glyphs[i].addClass('hcenter');
+            }
+            else {
+                glyphs[i].removeClass('hcenter');
+                glyphs[i].addClass('hfixed');
+            }
         }
     };
 

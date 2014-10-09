@@ -48,6 +48,18 @@ and open the template in the editor.
   width: 99%;
 }
 
+.hfixed {
+    opacity: 0.5;
+    font-size: 2.6em;
+}
+
+.hcenter {
+    text-align: center;
+    width: 100%;
+    opacity: 1.0;
+    font-size: 8.0em;
+}
+
 #product {
     /* extra styling */
     font-family: 'Helvetica Neue', Helvetica, sans-serif;
@@ -67,7 +79,6 @@ and open the template in the editor.
     z-index: 100;
     color: red;
     position: absolute;
-    width: 3.9em;
     height: 100%;
     right: 0;
     top: 45%;
@@ -81,7 +92,6 @@ and open the template in the editor.
     z-index: 100;
     color: red;
     position: absolute;
-    width: 3.9em;
     height: 100%;
     left: 0;
     top: 45%;
@@ -101,7 +111,5 @@ and open the template in the editor.
 }
 
 .edgeTarget .glyphicon {
-    font-size: xx-large;
-    opacity: 0.5;
     padding: 0.25ex;
 }
