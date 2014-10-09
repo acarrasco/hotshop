@@ -47,6 +47,7 @@ module.exports = {
     savePendingProducts: savePendingProducts,
     nextProduct: nextProduct,
     wantProduct: wantProduct,
+    ownProduct: ownProduct,
     ignoreProduct: ignoreProduct,
     getWishList: getWishList,
     getOwnList: getOwnList,
