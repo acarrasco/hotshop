@@ -15,17 +15,33 @@ and open the template in the editor.
 }
 
 #photoSwiper {
-    width: 100%;
+    background: #149e7d;
+    /* set the height of the element which contains what you want to center */
     height: 100%;
-    margin-left: auto;
-    margin-right: auto;
+    /* these styles are optional, to set width horizontally center the page */
+    max-width: 500px;
+    margin: 0 auto;
 }
-
-#photoSwiperContainer {
-    width: 100%;
-    min-height: 50%;
-    max-height: 50%;
-    position: absolute;
+#photoSwiper:before, #product {
+    /* these are the important styles for the centered element: */
+    display: inline-block;
+    vertical-align: middle;
+}
+#photoSwiper:before {
+    /* this is the important part for vertical alignment */
+    content: '';
+    display: inline-block;
+    width: 0;
+    height: 100%;
+    vertical-align: middle;
+    /* this just takes care of whitespace added by having display:inline-block (there are other methods) */
+    margin-left: -0.25em;
+}
+#roduct {
+    /* extra styling */
+    font-family: 'Helvetica Neue', Helvetica, sans-serif;
+    padding: 0 5% 0.5em 5%;
+    width: 90%;
 }
 
 #haveIt {

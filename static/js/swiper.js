@@ -39,7 +39,7 @@ define('swiper',
                     var distance = Math.sqrt(dx * dx + dy * dy);
 
                     //if long enough swipe
-                    if (distance > width * 0.5) {
+                    if (distance > width * 0.25) {
                         exitCallback(current, dx, dy, dt);
                     }
                     else {

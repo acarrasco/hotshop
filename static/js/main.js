@@ -83,15 +83,24 @@ define('main', ['swiper', 'facebook'], function (swiper, facebook) {
         for (var i = 0; i < 4; i++) {
             var opacity;
             var glow;
+            var size;
             if (i === side) {
-                opacity = distance > (width * 0.5) && 1 || 0.5;
+                if (distance > width * 0.25) {
+                    opacity = 1;
+                    size = 'xx-large';
+                } else {
+                    opacity = 0.5;
+                    size = 'x-large';
+                }
+                
                 var x = 2 * distance / width;
                 glow = '0 0 ' + x + 'em blue, 0 0 ' + x + 'em blue, 0 0 ' + x + 'em blue';
+
             } else {
                 opacity = 0.5;
                 glow = '';
             }
-            glyphs[i].css({'opacity': opacity, 'text-shadow': glow});
+            glyphs[i].css({'opacity': opacity, 'text-shadow': glow, 'font-size': size  });
         }
     };
 
@@ -133,12 +142,12 @@ define('main', ['swiper', 'facebook'], function (swiper, facebook) {
             feed(function(current) {
                 hash.productId = current.Id;
                 window.location.hash = $.param(hash);
-                swiper($('#photoSwiperContainer'), current, makeElement, exitCallback, updateCallback);
+                swiper($('#product'), current, makeElement, exitCallback, updateCallback);
             });
         } else {
             $.get('/product/' + productId, function(data) {
                 current = data.productInfo;
-                swiper($('#photoSwiperContainer'), current, makeElement, exitCallback, updateCallback);
+                swiper($('#product'), current, makeElement, exitCallback, updateCallback);
             });
         }
     }
