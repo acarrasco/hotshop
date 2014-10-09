@@ -10,6 +10,7 @@ function getFreshGoodReviewsFor(productIds, since, callback) {
         '&filter=Rating:', 5,
         '&filter=SubmissionDate:gt:', since].join('');
 
+    console.log(url);
     request.get(url, function (error, response, body) {
         try {
             body = JSON.parse(body);
@@ -31,6 +32,8 @@ function getFreshUnansweredQuestionsFor(productIds, since, callback) {
         '&filter=ProductId:', productIds.join(','),
         '&filter=Rating:', 5,
         '&filter=SubmissionDate:gt:', since].join('');
+
+    console.log(url);
 
     request.get(url, function (error, response, body) {
         try {
