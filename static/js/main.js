@@ -51,7 +51,10 @@ define('main', ['swiper', 'facebook'], function (swiper, facebook) {
     };
 
     var makeElement = function (productInfo) {
-        return $('<img>').attr({src: productInfo.ImageUrl});
+        return $('<div>').append(
+                $('<img>').attr({src: productInfo.ImageUrl}).css('width', '100%'),
+                $('<h2>').text(productInfo.Name),
+                $('<p>').text(productInfo.Description));
     };
 
     var pickSide = function (dx, dy) {
@@ -88,10 +91,6 @@ define('main', ['swiper', 'facebook'], function (swiper, facebook) {
                 } else {
                     chosen = false;
                 }
-                
-                var x = 2 * distance / width;
-                glow = '0 0 ' + x + 'em blue, 0 0 ' + x + 'em blue, 0 0 ' + x + 'em blue';
-
             } else {
                 chosen = false;
             }
@@ -110,7 +109,7 @@ define('main', ['swiper', 'facebook'], function (swiper, facebook) {
     var exitCallback = function (productInfo, dx, dy, dt) {
         var side = pickSide(dx, dy);
         for (var i = 0; i < 4; i++) {
-            glyphs[i].css({'opacity': 0.5, 'text-shadow': ''});
+            glyphs[i].removeClass('chosen').addClass('unchosen');
         }
 
         switch (side) {

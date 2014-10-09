@@ -57,7 +57,7 @@ app.post('/user/:userId/nextproduct', function (req, res) {
 });
 
 app.post('/user/:userId/have/:productId', function (req, res) {
-    db.haveProduct(req.params.userId, req.params.productId, function (err) {
+    db.ownProduct(req.params.userId, req.params.productId, function (err) {
         if (err) {
             return res.json({error: '' + err, reason: 'db error saving ownership list'});
         }
