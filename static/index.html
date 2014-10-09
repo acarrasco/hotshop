@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>HotShop</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+        <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="styles/main.css"/>
+        <script src="vendor/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+        <script data-main="js/main" src="vendor/require.js"></script>
+    </head>
+    <body>
+        <div id="mainContainer">
+            <div id="login" class="hidden">
+                <button>
+                    Log in with Facebook!
+                </button>
+            </div>
+            <div id="notifications" class="hidden"></div>
+            <div id="photoSwiper" class="hidden">
+                <div id="photoSwiperContainer"></div>
+                <div id="moreInfo" class="edgeTarget"><span class="glyphicon glyphicon-info-sign"></span></div>
+                <div id="wantIt" class="edgeTarget"><span class="glyphicon glyphicon-heart"></span></div>
+                <div id="haveIt" class="edgeTarget"><span class="glyphicon glyphicon-ok"></span></div>
+                <div id="meh" class="edgeTarget"><span class="glyphicon glyphicon-remove"></span></div>
+            </div>
+            <div id="productInfo" class="hidden"></div>
+        </div>
+    </body>
+</html>

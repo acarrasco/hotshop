@@ -1,0 +1,74 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/*
+    Created on : Oct 8, 2014, 1:23:32 PM
+    Author     : alejandro.carrasco
+*/
+
+#mainContainer {
+    width:100%;
+    height:100%;
+    position: fixed;
+}
+
+#photoSwiper {
+    width: 100%;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#photoSwiperContainer {
+    width: 100%;
+    min-height: 50%;
+    max-height: 50%;
+    position: absolute;
+}
+
+#haveIt {
+    bottom: 50%;
+    z-index: 100;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    position: absolute;
+    width: 100%;
+}
+
+#wantIt {
+    z-index: 100;
+    position: absolute;
+    right: 0;
+    top: 20%;
+    color: red;
+}
+#wantIt p {
+    transform: rotate(90deg);
+    text-align: center;
+}
+
+#meh {
+    z-index: 100;
+    left: 0;
+    position: absolute;
+    top: 20%;
+}
+#meh p {
+    transform: rotate(90deg);
+}
+
+#moreInfo {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    z-index: 100;
+    top: 0;
+}
+
+.edgeTarget .glyphicon {
+    font-size: xx-large;
+    opacity: 0.5;
+}
