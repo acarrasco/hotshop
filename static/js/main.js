@@ -80,7 +80,7 @@ define('main', ['swiper', 'facebook'], function (swiper, facebook, navbar) {
 
     function loadFriends() {
         facebook.api('/me/friends', function (response) {
-            var $friends = $('#friends');
+            var $friends = $('#friends').empty();
             var friendsList = response.data;
             for (var i = 0; i < friendsList.length; i++) {
                 (function () {
