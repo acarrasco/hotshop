@@ -22,7 +22,7 @@ function getFreshGoodReviewsFor(productIds, since, callback) {
             return callback(error, null);
         }
 
-        callback(null, body.Results);
+        callback(null, body);
     });
 }
 
@@ -46,7 +46,7 @@ function getFreshUnansweredQuestionsFor(productIds, since, callback) {
             return callback(error, null);
         }
 
-        callback(null, body.Results);
+        callback(null, body);
     });
 }
 

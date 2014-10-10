@@ -15,6 +15,22 @@ body {
     background: black;
 }
 
+ul {
+    list-style-type: none;
+}
+
+#reviews li {
+    border-top: solid white 1px;
+    padding: 1em;
+    margin-right: 2.5em;
+}
+
+#questions li {
+    border-top: solid white 1px;
+    padding: 1em;
+    margin-right: 2.5em;
+}
+
 #navbar {
     width: 100%;
 }
@@ -157,6 +173,10 @@ body {
 }
 
 #questionsContainer {
+    overflow: scroll;
+}
+
+#friendsContainer {
     overflow: scroll;
 }
 

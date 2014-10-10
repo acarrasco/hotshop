@@ -49,17 +49,15 @@ define('main', ['swiper', 'facebook'], function (swiper, facebook, navbar) {
         },
         {
             title: 'Friends wishlists',
-            el: $('#friends'),
-            enter: function () {
-
-            }
+            el: $('#friendsContainer'),
+            enter: loadFriends
         }
     ];
 
     function loadReviews() {
         $.get('/user/' + userId + '/reviews', function (data) {
             var $reviews = $('#reviews').empty();
-            var reviews = data.reviews;
+            var reviews = data.Results;
             for (var i = 0; i < reviews.length; i++) {
                 var review = reviews[i];
                 var $review = $('<li>').append($('<a>').attr('href', 'http://fbrr-stg.sta.bazaarvoice.com/nikon-1/review/' + review.Id).text(review.Title));
@@ -71,11 +69,50 @@ define('main', ['swiper', 'facebook'], function (swiper, facebook, navbar) {
     function loadQuestions() {
         $.get('/user/' + userId + '/questions', function (data) {
             var $questions = $('#questions').empty();
-            var questions = data.questions;
+            var questions = data.Results;
             for (var i = 0; i < questions.length; i++) {
                 var question = questions[i];
                 var question = $('<li>').append($('<a>').attr('href', 'http://fbaa-stg.sta.bazaarvoice.com/nikon-1/question/' + question.Id + '/').text(question.QuestionSummary));
                 $questions.append(question);
+            }
+        });
+    }
+
+    function loadFriends() {
+        facebook.api('/me/friends', function (response) {
+            var $friends = $('#friends');
+            var friendsList = response.data;
+            for (var i = 0; i < friendsList.length; i++) {
+                (function () {
+                    var friendId = friendsList[i].id;
+                    var $friend = $('<ul class="friend">');
+                    var $friendProducts = $('<ul>');
+                    var $friendPic = $('<img>');
+
+                    facebook.api('/' + friendId + '/picture', function(response) {
+                        $friendPic.attr('src', response.data.url)
+                        $friend.append($friendPic, $friendProducts);
+                        $friends.append($friend);
+                        $friendPic.bind('click', function() {
+
+                            if ($friendProducts.children().length) {
+                                $friendProducts.empty();
+                                return;
+                            }
+                            $friendProducts.empty();
+
+                            $.get('/user/' + friendId + '/wishlist', function(response) {
+                                var wishList = response.wishList;
+                                for (var j = 0; j < wishList.length; j++) {
+                                    var productId = wishList[j];
+                                    $.get('/product/' + productId, function(response) {
+                                        $friendProducts.append($('<li>').append($('<a>').attr('href', response.ProductPageUrl).text(response.Name)));
+                                    });
+                                }
+                            });
+                        });
+                    });
+                })();
             }
         });
     }
@@ -242,7 +279,7 @@ define('main', ['swiper', 'facebook'], function (swiper, facebook, navbar) {
             });
         } else {
             $.get('/product/' + productId, function (data) {
-                current = data.productInfo;
+                current = data;
                 swiper($('#product'), current, makeElement, exitCallback, updateCallback);
             });
         }
