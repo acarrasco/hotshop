@@ -48,7 +48,7 @@ define('main', ['swiper', 'facebook'], function (swiper, facebook, navbar) {
             enter: loadQuestions
         },
         {
-            title: 'Friends',
+            title: 'Friends wishlists',
             el: $('#friends'),
             enter: function () {
 
@@ -74,7 +74,7 @@ define('main', ['swiper', 'facebook'], function (swiper, facebook, navbar) {
             var questions = data.questions;
             for (var i = 0; i < questions.length; i++) {
                 var question = questions[i];
-                var question = $('<li>').append($('<a>').attr('href', 'http://fbaa-stg.sta.bazaarvoice.com/nikon-1/question/' + question.Id).text(question.QuestionSummary));
+                var question = $('<li>').append($('<a>').attr('href', 'http://fbaa-stg.sta.bazaarvoice.com/nikon-1/question/' + question.Id + '/').text(question.QuestionSummary));
                 $questions.append(question);
             }
         });
@@ -126,7 +126,7 @@ define('main', ['swiper', 'facebook'], function (swiper, facebook, navbar) {
                 right();
                 console.log(arguments);
             });
-        });
+        }, {scope: 'user_friends'});
     });
 
     facebook.getLoginStatus(function (response) {
