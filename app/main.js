@@ -4,11 +4,28 @@ var lodash = require('lodash');
 var products = require('./products');
 var ugc = require('./ugc');
 var db = require('./db');
-
+var path = require('path');
 var app = express();
 
 // 'express.static' causes jshint warning (static is reserved word).
 app.use('/public', express['static']('static'));
+
+// root route
+app.get('/', function(req, res) {
+    // load the single view file (angular will handle the page changes on the front-end)
+    res.sendFile(path.join(__dirname, '../static', 'index.html'));
+});
+
+// static content routes
+app.get('/vendor/*', function(req, res) {
+    res.sendFile(path.join(__dirname, '../static', req.path));
+});
+app.get('/styles/*', function(req, res) {
+    res.sendFile(path.join(__dirname, '../static', req.path));
+});
+app.get('/js/*', function(req, res) {
+    res.sendFile(path.join(__dirname, '../static', req.path));
+});
 
 app.post('/user/:userId/init', function (req, res) {
     var userId = req.params.userId;
