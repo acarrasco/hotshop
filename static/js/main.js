@@ -79,8 +79,8 @@ define('main', ['swiper', 'facebook'], function (swiper, facebook, navbar) {
     }
 
     function loadFriends() {
+        var $friends = $('#friends').empty();
         facebook.api('/me/friends', function (response) {
-            var $friends = $('#friends').empty();
             var friendsList = response.data;
             for (var i = 0; i < friendsList.length; i++) {
                 (function () {
@@ -89,11 +89,11 @@ define('main', ['swiper', 'facebook'], function (swiper, facebook, navbar) {
                     var $friendProducts = $('<ul>');
                     var $friendPic = $('<img>');
 
-                    facebook.api('/' + friendId + '/picture', function(response) {
+                    facebook.api('/' + friendId + '/picture', function (response) {
                         $friendPic.attr('src', response.data.url)
                         $friend.append($friendPic, $friendProducts);
                         $friends.append($friend);
-                        $friendPic.bind('click', function() {
+                        $friendPic.bind('click', function () {
 
                             if ($friendProducts.children().length) {
                                 $friendProducts.empty();
@@ -101,11 +101,11 @@ define('main', ['swiper', 'facebook'], function (swiper, facebook, navbar) {
                             }
                             $friendProducts.empty();
 
-                            $.get('/user/' + friendId + '/wishlist', function(response) {
+                            $.get('/user/' + friendId + '/wishlist', function (response) {
                                 var wishList = response.wishList;
                                 for (var j = 0; j < wishList.length; j++) {
                                     var productId = wishList[j];
-                                    $.get('/product/' + productId, function(response) {
+                                    $.get('/product/' + productId, function (response) {
                                         $friendProducts.append($('<li>').append($('<a>').attr('href', response.ProductPageUrl).text(response.Name)));
                                     });
                                 }
@@ -117,14 +117,14 @@ define('main', ['swiper', 'facebook'], function (swiper, facebook, navbar) {
         });
     }
 
-    $('#dismissReviews').bind('click', function() {
-        $.post('/user/' + userId + '/dismissReviews', function() {
+    $('#dismissReviews').bind('click', function () {
+        $.post('/user/' + userId + '/dismissReviews', function () {
             $('#reviews').empty();
         });
     });
 
-    $('#dismissQuestions').bind('click', function() {
-        $.post('/user/' + userId + '/dismissQuestions', function() {
+    $('#dismissQuestions').bind('click', function () {
+        $.post('/user/' + userId + '/dismissQuestions', function () {
             $('#questions').empty();
         });
     });
