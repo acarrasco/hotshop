@@ -34,12 +34,20 @@ function getOwnList(userId, callback) {
     client.smembers('own_' + userId, callback);
 }
 
-function getNotificationsDate(userId, callback) {
-    client.get('notifications_date_' + userId, callback);
+function getReviewsDate(userId, callback) {
+    client.get('reviews_date_' + userId, callback);
 }
 
-function updateNotificationsDate(userId, timestamp, callback) {
-    client.getset('notifications_date_' + userId, timestamp, callback);
+function updateReviewsDate(userId, timestamp, callback) {
+    client.getset('reviews_date_' + userId, timestamp, callback);
+}
+
+function getQuestionsDate(userId, callback) {
+    client.get('questions_date_' + userId, callback);
+}
+
+function updateQuestionsDate(userId, timestamp, callback) {
+    client.getset('questions_date_' + userId, timestamp, callback);
 }
 
 module.exports = {
@@ -51,6 +59,8 @@ module.exports = {
     ignoreProduct: ignoreProduct,
     getWishList: getWishList,
     getOwnList: getOwnList,
-    getNotificationsDate: getNotificationsDate,
-    updateNotificationsDate: updateNotificationsDate
+    getReviewsDate: getReviewsDate,
+    updateReviewsDate: updateReviewsDate,
+    getQuestionsDate: getQuestionsDate,
+    updateQuestionsDate: updateQuestionsDate
 };

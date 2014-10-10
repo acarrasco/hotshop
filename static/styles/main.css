@@ -8,6 +8,39 @@ and open the template in the editor.
     Author     : alejandro.carrasco
 */
 
+* {
+    color: white;
+}
+body {
+    background: black;
+}
+
+#navbar {
+    width: 100%;
+}
+
+#leftArrow {
+    position: absolute;
+    display: inline-block;
+    font-size: 2em;
+    left: 0;
+}
+#rightArrow {
+    top: 0;
+    position: absolute;
+    right: 0;
+    display: inline-block;
+    font-size: 2em;
+}
+
+#sectionLabel {
+    width: 100%;
+    text-align: center;
+    font-size: 1.5em;
+    display: inline-block;
+    height: 2em;
+}
+
 #mainContainer {
     width:100%;
     height:100%;
@@ -15,7 +48,6 @@ and open the template in the editor.
 }
 
 #photoSwiper {
-    background: #149e7d;
     /* set the height of the element which contains what you want to center */
     height: 100%;
     /* these styles are optional, to set width horizontally center the page */
@@ -41,11 +73,11 @@ and open the template in the editor.
 }
 
 .valignContainer {
-  /* extra styling */
-  background: #ddd;
-  border-radius: 5px;
-  padding: 0 5% 0.5em 5%;
-  width: 99%;
+    /* extra styling */
+    background: #ddd;
+    border-radius: 5px;
+    padding: 0 5% 0.5em 5%;
+    width: 99%;
 }
 
 .unchosen {
@@ -57,11 +89,11 @@ and open the template in the editor.
 }
 
 .chosen {
-    text-align: center;
-    width: 100%;
+//    text-align: center;
+//    width: 100%;
     opacity: 1.0;
     font-size: 8.0em;
-    
+
     transition-property: font-size, width, opacity;
     transition-duration: 0.25s;
 }
@@ -72,7 +104,7 @@ and open the template in the editor.
 }
 
 #haveIt {
-    bottom: 0;
+    bottom: 1em;
     z-index: 100;
     margin-left: auto;
     margin-right: auto;
@@ -118,4 +150,17 @@ and open the template in the editor.
 
 .edgeTarget .glyphicon {
     padding: 0.25ex;
+}
+
+#reviewsContainer {
+    overflow: scroll;
+}
+
+#questionsContainer {
+    overflow: scroll;
+}
+
+button {
+    width: 100%;
+    color: black;
 }

@@ -8,6 +8,7 @@ function getAllProducts(callback) {
         var url = ['https://stg.api.bazaarvoice.com/data/products.json?apiversion=5.4',
             '&passkey=', config.rrkey,
             '&limit=100',
+            '&filter=isactive:eq:true',
             '&offset=', offset].join('');
 
         request.get(url, function (error, response, body) {

@@ -31,16 +31,11 @@ app.post('/user/:userId/init', function (req, res) {
 
             var productIds = lodash.pluck(products, 'Id');
 
-            db.updateNotificationsDate(userId, Date.now() - 60 * 60 * 24 * 360 * 4, function (err) {
+            db.savePendingProducts(userId, productIds, function (err) {
                 if (err) {
-                    return res.json({error: '' + err, reason: 'db error saving notifications date'});
+                    return res.json({error: '' + err, reason: 'db error saving pending products'});
                 }
-                db.savePendingProducts(userId, productIds, function (err) {
-                    if (err) {
-                        return res.json({error: '' + err, reason: 'db error saving pending products'});
-                    }
-                    return res.json({error: false, newUser: true});
-                });
+                return res.json({error: false, newUser: true});
             });
         });
     });
@@ -110,7 +105,8 @@ app.get('/user/:userId/ownlist', function (req, res) {
 
 app.get('/user/:userId/reviews', function (req, res) {
     var userId = req.params.userId;
-    db.getNotificationsDate(userId, function (since) {
+    db.getReviewsDate(userId, function (err, since) {
+        since = since || Math.round(Date.now()/1000 - (60 * 60 * 24 * 365 * 5));
         db.getWishList(userId, function (err, productIds) {
             if (err) {
                 return res.json({error: '' + err, reason: 'db error getting wish list'});
@@ -127,7 +123,8 @@ app.get('/user/:userId/reviews', function (req, res) {
 
 app.get('/user/:userId/questions', function (req, res) {
     var userId = req.params.userId;
-    db.getNotificationsDate(userId, function (since) {
+    db.getQuestionsDate(userId, function (err, since) {
+        since = since || Math.round(Date.now()/1000 - (60 * 60 * 24 * 365 * 5));
         db.getOwnList(userId, function (err, productIds) {
             if (err) {
                 return res.json({error: '' + err, reason: 'db error getting own list'});

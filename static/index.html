@@ -18,19 +18,39 @@ and open the template in the editor.
         <script data-main="js/main" src="vendor/require.js"></script>
     </head>
     <body>
+        <div id="navbar">
+            <div id="leftArrow">
+                <span class="glyphicon glyphicon-circle-arrow-left"></span>
+            </div>
+            <span id="sectionLabel"></span>
+            <div id="rightArrow">
+                <span class="glyphicon glyphicon-circle-arrow-right"></span>
+            </div>
+        </div>
         <div id="mainContainer">
-            <div id="login" class="hidden">
+            <div id="login">
                 <button>
                     Log in with Facebook!
                 </button>
             </div>
-            <div id="notifications" class="hidden"></div>
             <div id="photoSwiper" class="hidden">
                 <div id="wantIt" class="edgeTarget unchosen"><span class="glyphicon glyphicon-heart"></span></div>
                 <div id="product"></div>
                 <div id="moreInfo" class="edgeTarget unchosen"><span class="glyphicon glyphicon-info-sign"></span></div>
                 <div id="haveIt" class="edgeTarget unchosen"><span class="glyphicon glyphicon-ok"></span></div>
                 <div id="meh" class="edgeTarget unchosen"><span class="glyphicon glyphicon-remove"></span></div>
+            </div>
+            <div id="reviewsContainer">
+                <ul id="reviews">
+                </ul>
+                <button id="dismissReviews">dismiss</button>
+            </div>
+            <div id="questionsContainer">
+                <ul id="questions">
+                </ul>
+                <button id="dismissQuestions">dismiss</button>
+            </div>
+            <div id="friends" class="hidden">
             </div>
         </div>
     </body>

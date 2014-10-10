@@ -11,7 +11,7 @@ requirejs.config({
 });
 
 
-define('main', ['swiper', 'facebook'], function (swiper, facebook) {
+define('main', ['swiper', 'facebook'], function (swiper, facebook, navbar) {
     facebook.init({
         appId: '811329552262479',
         cookie: true,
@@ -22,12 +22,108 @@ define('main', ['swiper', 'facebook'], function (swiper, facebook) {
     var current;
     var userId;
 
+
+    var sections = [
+        {
+            title: 'Login',
+            el: $('#login'),
+            enter: function () {
+
+            }
+        },
+        {
+            title: 'Catalog',
+            el: $('#photoSwiper'),
+            enter: function () {
+            }
+        },
+        {
+            title: 'Recommended reviews',
+            el: $('#reviewsContainer'),
+            enter: loadReviews
+        },
+        {
+            title: 'Pending questions',
+            el: $('#questionsContainer'),
+            enter: loadQuestions
+        },
+        {
+            title: 'Friends',
+            el: $('#friends'),
+            enter: function () {
+
+            }
+        }
+    ];
+
+    function loadReviews() {
+        $.get('/user/' + userId + '/reviews', function (data) {
+            var $reviews = $('#reviews').empty();
+            var reviews = data.reviews;
+            for (var i = 0; i < reviews.length; i++) {
+                var review = reviews[i];
+                var $review = $('<li>').append($('<a>').attr('href', 'http://fbrr-stg.sta.bazaarvoice.com/nikon-1/review/' + review.Id).text(review.Title));
+                $reviews.append($review);
+            }
+        });
+    }
+
+    function loadQuestions() {
+        $.get('/user/' + userId + '/questions', function (data) {
+            var $questions = $('#questions').empty();
+            var questions = data.questions;
+            for (var i = 0; i < questions.length; i++) {
+                var question = questions[i];
+                var question = $('<li>').append($('<a>').attr('href', 'http://fbaa-stg.sta.bazaarvoice.com/nikon-1/question/' + question.Id).text(question.QuestionSummary));
+                $questions.append(question);
+            }
+        });
+    }
+
+    var sectionIndex = 0;
+    var $navbar = $('#navbar');
+    var $leftArrow = $('#leftArrow');
+    var $rightArrow = $('#rightArrow');
+    var $sectionLabel = $('#sectionLabel');
+
+    $leftArrow.bind('click', left);
+    $rightArrow.bind('click', right);
+
+    function right() {
+        if (sectionIndex === sections.length - 1) {
+            return;
+        }
+        sections[sectionIndex++].el.addClass('hidden');
+        sections[sectionIndex].el.removeClass('hidden');
+        $sectionLabel.text(sections[sectionIndex].title);
+        sections[sectionIndex].enter();
+        sections[sectionIndex].el.height($(window).height() - $navbar.height());
+        if (sectionIndex === sections.length - 1) {
+            $rightArrow.css('opacity', 0.25);
+        }
+        $leftArrow.css('opacity', 1);
+    }
+
+    function left() {
+        if (sectionIndex === 0) {
+            return;
+        }
+        sections[sectionIndex--].el.addClass('hidden');
+        sections[sectionIndex].el.removeClass('hidden');
+        $sectionLabel.text(sections[sectionIndex].title);
+        sections[sectionIndex].enter();
+        sections[sectionIndex].el.height($(window).height() - $navbar.height());
+        if (sectionIndex === 0) {
+            $leftArrow.css('opacity', 0.25);
+        }
+        $rightArrow.css('opacity', 1);
+    }
+
     $('#login button').bind('click', function () {
         facebook.login(function () {
             $.post('/user/' + userId + '/init', function () {
-                $('#login').addClass('hidden');
-                $('#photoSwiper').removeClass('hidden');
                 load();
+                right();
                 console.log(arguments);
             });
         });
@@ -35,11 +131,9 @@ define('main', ['swiper', 'facebook'], function (swiper, facebook) {
 
     facebook.getLoginStatus(function (response) {
         if (response.status === 'connected') {
-            $('#photoSwiper').removeClass('hidden');
             userId = response.authResponse.userID;
             load();
-        } else {
-            $('#login').removeClass('hidden');
+            right();
         }
     });
 
@@ -141,13 +235,13 @@ define('main', ['swiper', 'facebook'], function (swiper, facebook) {
         var productId = hash.productId;
 
         if (current || !productId) {
-            feed(function(current) {
+            feed(function (current) {
                 hash.productId = current.Id;
                 window.location.hash = $.param(hash);
                 swiper($('#product'), current, makeElement, exitCallback, updateCallback);
             });
         } else {
-            $.get('/product/' + productId, function(data) {
+            $.get('/product/' + productId, function (data) {
                 current = data.productInfo;
                 swiper($('#product'), current, makeElement, exitCallback, updateCallback);
             });

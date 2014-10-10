@@ -6,9 +6,10 @@ function getFreshGoodReviewsFor(productIds, since, callback) {
     var url = ['https://stg.api.bazaarvoice.com/data/reviews.json?apiversion=5.4',
         '&passkey=', config.rrkey,
         '&limit=100',
+        '&moderationstatus=approved',
         '&filter=ProductId:', productIds.join(','),
         '&filter=Rating:', 5,
-        '&filter=SubmissionDate:gt:', since].join('');
+        '&filter=LastModeratedTime:gt:', since].join('');
 
     console.log(url);
     request.get(url, function (error, response, body) {
@@ -29,9 +30,9 @@ function getFreshUnansweredQuestionsFor(productIds, since, callback) {
     var url = ['https://stg.api.bazaarvoice.com/data/questions.json?apiversion=5.4',
         '&passkey=', config.rrkey,
         '&limit=100',
+        '&moderationstatus=approved',
         '&filter=ProductId:', productIds.join(','),
-        '&filter=Rating:', 5,
-        '&filter=SubmissionDate:gt:', since].join('');
+        '&filter=LastModeratedTime:gt:', since].join('');
 
     console.log(url);
 
