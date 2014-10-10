@@ -117,6 +117,18 @@ define('main', ['swiper', 'facebook'], function (swiper, facebook, navbar) {
         });
     }
 
+    $('#dismissReviews').bind('click', function() {
+        $.post('/user/' + userId + '/dismissReviews', function() {
+            $('#reviews').empty();
+        });
+    });
+
+    $('#dismissQuestions').bind('click', function() {
+        $.post('/user/' + userId + '/dismissQuestions', function() {
+            $('#questions').empty();
+        });
+    });
+
     var sectionIndex = 0;
     var $navbar = $('#navbar');
     var $leftArrow = $('#leftArrow');
